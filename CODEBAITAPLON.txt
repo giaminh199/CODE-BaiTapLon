@@ -1,0 +1,188 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<Windows.h>
+struct SinhVien
+{
+    char ten[50];
+    char age;
+    char gioitinh[5];
+    float dT, dL, dH; 
+    float TDiem ; 
+}; 
+typedef SinhVien SV;
+void sapxep(SV a[], int n);
+void Trungtuyen(SV a);
+void TrungtuyenN(SV a[], int n);
+void nhap(SV &sv);
+void xuat(SV sv);
+void nhapN(SV a[], int n);
+void xuatN(SV a[], int n);
+void TongDiem(SV &sv);
+void xuatFile(SV a[], int n, char fileName[]);
+int main(){
+    int key;
+    system("color 34");
+    char fileName[] = "DSSV.txt";
+    int n;
+    bool daNhap = false;
+    do{
+        printf("\nNhap so luong SV: "); scanf("%d", &n);
+    }while(n <= 0);
+    SV a[n];
+    while(true){
+        system("cls");
+        printf("**     CHUONG TRINH QUAN LY SINH VIEN       **\n");
+        printf("**      1. Nhap du lieu Sinh Vien           **\n");
+        printf("**      2. DS sinh vien                     **\n");
+        printf("**      3. Sap xep theo tong diem           **\n");
+        printf("**      4. Co trung tuyen nganh CNTT khong  **\n");
+        printf("**      5. In danh sach sinh vien           **\n");
+        printf("**      0. Thoat                            **\n");
+        printf("**********************************************\n");
+        printf("**       Nhap lua chon cua ban              **\n");
+        scanf("%d",&key);
+        switch(key){           
+		case 1:
+                printf("\nBan da chon nhap DS sinh vien");
+                nhapN(a, n);
+                printf("\nBan da nhap thanh cong");
+                daNhap = true;
+                printf("\nBam phim bat ky de tiep tuc");
+                getch();
+                break;
+        case 2:
+                if(daNhap){
+                    printf("\nBan da chon DS sinh vien");
+                    xuatN(a, n);
+                }else{
+                    printf("\nNhap DS SV truoc");
+                }
+                printf("\nBam phim bat ky de tiep tuc");
+                getch();
+                break;
+        case 3:
+                if(daNhap){
+                    printf("\nBan da chon sap xep theo tong diem");
+                    sapxep(a, n);
+                    xuatN(a, n);
+                }else{
+                    printf("\nNhap DS SV truoc");
+                }
+                printf("\nBam phim bat ky de tiep tuc");
+                getch();
+                break;            
+		case 4:
+                if(daNhap){
+                    printf("\nCo trung tuyen nganh CNTT khong");
+                    TrungtuyenN(a, n);
+                }else{
+                    printf("\nNhap DS SV truoc");
+                }
+                printf("\nBam phim bat ky de tiep tuc");
+                getch();
+                break;              
+		case 5:
+                if(daNhap){
+                    printf("\nBan da chon xuat DS SV");
+                    xuatFile(a, n, fileName);
+                }else{
+                    printf("\nNhap DS SV truoc");
+                }
+                printf("\nXuat DSSV thanh cong vao file %s", fileName);
+                printf("\nBam phim bat ky de tiep tuc");
+                getch();
+                break;          
+		case 0:
+                printf("\nBan da chon thoat chuong trinh!");
+                getch();
+                return 0;
+            default:
+                printf("\nKhong co chuc nang nay!");
+                printf("\nBam phim bat ky de tiep tuc!");
+                getch();
+                break;
+            }
+    }
+}
+void TongDiem(SV &sv){
+		sv.TDiem = sv.dH + sv.dL + sv.dT;
+}
+void nhap(SV &sv){	
+    printf("\nNhap Ho va ten : ");
+	fflush(stdin); 
+	gets(sv.ten);
+    printf("\nNhap gioi tinh: ");
+    fflush(stdin);
+	gets(sv.gioitinh);
+    printf("\nNhap tuoi: "); 
+	scanf("%d", &sv.age);
+	TongDiem(sv);
+	printf("\nNhap diem Toan  : ");
+	scanf("%f",&sv.dT);
+	printf("\nNhap diem Ly : ");
+	scanf("%f",&sv.dL);
+	printf("\nNhap diem Hoa : ");
+	scanf("%f",&sv.dH);
+	TongDiem(sv);
+}
+void nhapN(SV a[], int n){
+    printf("\n       \n");
+    for(int i = 0; i< n; i++){
+        printf("\nNhap SV thu %d:", i+1);
+        nhap(a[i]);
+}
+    printf("\n      \n");
+}
+void xuat(SV sv)
+{
+	printf("\n Ho va ten : %s",sv.ten);
+	printf("\n Gioi tinh : %s",sv.gioitinh);
+	printf("\n Tuoi : %d",sv.age);
+	printf("%s",sv.gioitinh);
+	printf("\nDiem Toan - Ly - Hoa: %.2f - %.2f - %.2f", sv.dT, sv.dL, sv.dH);
+	printf("\n Diem Tong : %.2f",sv.TDiem);
+} 
+  void xuatN(SV a[], int n){
+    printf("\n      \n");
+    for(int i = 0;i < n;++i){
+        printf("\nThong tin SV thu %d:", i+1);
+        xuat(a[i]);
+    }
+    printf("\n     \n");
+} 
+void sapxep(SV a[], int n){
+    SV tmp;
+    for(int i = 0;i < n;++i){
+        for(int j = i+1; j < n;++j){
+            if(a[i].TDiem < a[j].TDiem){
+                tmp = a[i];
+                a[i] = a[j];
+                a[j] = tmp;
+            }
+        }
+    }
+}
+void Trungtuyen(SV sv){
+    if(sv.TDiem >= 18.05) 
+	printf("Ban da trung tuyen");
+    else printf("Ban da khong trung tuyen");
+}
+void TrungtuyenN(SV a[], int n){
+    printf("\n____________________________________\n");
+    for(int i = 0;i < n;++i){
+        printf("\nSinh vien thu %d : ", i+1);
+        Trungtuyen(a[i]);
+    }
+    printf("\n____________________________________\n");
+}
+void xuatFile(SV a[], int n, char fileName[]){
+    FILE * fp;
+    fp = fopen (fileName,"w");
+    fprintf(fp, "%20s%5s%5s%10s%10s%10s%10s\n", "Ho Ten","GT", "Tuoi", "DT", "DL", "DH", "DTB");
+    for(int i = 0;i < n;i++){
+        fprintf(fp, "%20s%5s%5d%10f%10f%10f%10f\n", a[i].ten,a[i].gioitinh,a[i].age, a[i].dT, a[i].dL, a[i].dH, a[i].TDiem);
+    }
+    fclose (fp);
+
+}
